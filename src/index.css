@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #E4572E;
+    --primary-hover: #cf4720;
+    --accent: #17BEBB;
+    --accent-hover: #139f9d;
+    --bg: #0F1115;
+    --surface: #1A1D23;
+    --surface-hover: #232730;
+    --surface-border: #2B303C;
+    --text: #F5F5F5;
+    --muted: #9EABB8;
+    --radius: 16px;
+    --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings typography */
+  h1, .font-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+}
+
+/* Custom Utilities */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.heading-accent {
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* 6-second subtle attention pulse for Free Trial button */
+@keyframes pulse-cta {
+  0%, 85%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(228, 87, 46, 0.5);
+  }
+  90% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(228, 87, 46, 0.25);
+  }
+  95% {
+    transform: scale(1);
+    box-shadow: 0 0 0 14px rgba(228, 87, 46, 0);
+  }
+}
+
+.pulse-free-trial {
+  animation: pulse-cta 6s infinite ease-in-out;
+}
+
+/* Hide scrollbars for clean swipe rows while keeping smooth scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

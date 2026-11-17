@@ -1,0 +1,431 @@
+{
+  "name": "Well Flabb Fitness Club - WhatsApp & Supabase Automations",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "node-webhook-lead",
+      "name": "Webhook: New Lead Received",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.leads (name, phone, goal, batch, source, status)\nVALUES ($1, $2, $3, $4, 'website', 'new')\nRETURNING *;",
+        "queryParams": "={{ [ $json.body.name, $json.body.phone, $json.body.goal, $json.body.batch ] }}"
+      },
+      "id": "node-supabase-insert-lead",
+      "name": "Supabase: Save Lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [320, 200],
+      "credentials": {
+        "postgres": {
+          "id": "supabase-db-creds",
+          "name": "Supabase PostgreSQL Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $node['Supabase: Save Lead'].json.phone.replace(/[^0-9]/g, '') }}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"well_flabb_trial_reserved\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"{{ $node['Supabase: Save Lead'].json.name }}\" }\n        ]\n      }\n    ]\n  }\n}"
+      },
+      "id": "node-whatsapp-lead-welcome",
+      "name": "WhatsApp: Send Lead Welcome",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 160],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"919999636973\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"🚨 *New Free Trial Lead on Well Flabb!*\\n• Name: {{ $node['Supabase: Save Lead'].json.name }}\\n• Phone: {{ $node['Supabase: Save Lead'].json.phone }}\\n• Goal: {{ $node['Supabase: Save Lead'].json.goal }}\\n• Batch: {{ $node['Supabase: Save Lead'].json.batch }}\\n• Time: {{ $now.setZone('Asia/Kolkata').toFormat('dd-MM-yyyy hh:mm a') }}\\n\\nOpen /admin to view and schedule.\"\n  }\n}"
+      },
+      "id": "node-whatsapp-owner-alert",
+      "name": "WhatsApp: Alert Owner (+91 99996 36973)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 320],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node-cron-3d-followup",
+      "name": "Cron: Daily 11:00 AM IST (3-Day Followup)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [100, 520]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, name, phone, goal, batch \nFROM public.leads \nWHERE status = 'new' \n  AND created_at <= NOW() - INTERVAL '3 days'\n  AND created_at >= NOW() - INTERVAL '4 days';"
+      },
+      "id": "node-db-get-unconverted-leads",
+      "name": "Supabase: Fetch 3-Day Old New Leads",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [320, 520],
+      "credentials": {
+        "postgres": {
+          "id": "supabase-db-creds",
+          "name": "Supabase PostgreSQL Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json.phone.replace(/[^0-9]/g, '') }}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"well_flabb_lead_followup_3d\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"{{ $json.name }}\" }\n        ]\n      }\n    ]\n  }\n}"
+      },
+      "id": "node-whatsapp-3d-followup",
+      "name": "WhatsApp: 3-Day Follow-Up with Review Quote",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 520],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node-cron-renewal-reminders",
+      "name": "Cron: Daily 10:00 AM IST (Renewals)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [100, 720]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  id, \n  name, \n  phone, \n  plan, \n  end_date, \n  (end_date - CURRENT_DATE) as days_remaining \nFROM public.members \nWHERE opted_in = true \n  AND end_date IN (CURRENT_DATE + INTERVAL '7 days', CURRENT_DATE + INTERVAL '3 days', CURRENT_DATE);"
+      },
+      "id": "node-db-get-expiring-members",
+      "name": "Supabase: Fetch Expiring Members (7, 3, 0 Days)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [320, 720],
+      "credentials": {
+        "postgres": {
+          "id": "supabase-db-creds",
+          "name": "Supabase PostgreSQL Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json.phone.replace(/[^0-9]/g, '') }}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"well_flabb_renewal_reminder\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"{{ $json.name }}\" },\n          { \"type\": \"text\", \"text\": \"{{ $json.plan }}\" },\n          { \"type\": \"text\", \"text\": \"{{ $json.days_remaining == 0 ? 'today' : $json.days_remaining + ' days' }}\" },\n          { \"type\": \"text\", \"text\": \"https://rzp.io/l/wellflabb-\" + $json.plan.toLowerCase() }\n        ]\n      }\n    ]\n  }\n}"
+      },
+      "id": "node-whatsapp-renewal-reminder",
+      "name": "WhatsApp: Send Razorpay Renewal Link",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 720],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 16 * * 2,5"
+            }
+          ]
+        }
+      },
+      "id": "node-cron-inactive-check",
+      "name": "Cron: Tue & Fri 4:00 PM IST (Inactive 10d)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [100, 920]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, name, phone, plan, trainer, last_checkin \nFROM public.members \nWHERE opted_in = true \n  AND end_date >= CURRENT_DATE \n  AND (NOW() - COALESCE(last_checkin, created_at)) >= INTERVAL '10 days'\n  AND (NOW() - COALESCE(last_checkin, created_at)) <= INTERVAL '14 days';"
+      },
+      "id": "node-db-get-inactive-members",
+      "name": "Supabase: Inactive 10+ Days Members",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [320, 920],
+      "credentials": {
+        "postgres": {
+          "id": "supabase-db-creds",
+          "name": "Supabase PostgreSQL Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json.phone.replace(/[^0-9]/g, '') }}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"well_flabb_inactive_nudge\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"{{ $json.name }}\" }\n        ]\n      }\n    ]\n  }\n}"
+      },
+      "id": "node-whatsapp-coach-nudge",
+      "name": "WhatsApp: Coach Rahul Inactive Nudge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 920],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node-cron-7am-digest",
+      "name": "Cron: Daily 7:00 AM IST (Owner Digest)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [100, 1140]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH trials AS (\n  SELECT COALESCE(string_agg(CONCAT('• ', name, ' (', phone, ') - ', batch, ' - Goal: ', COALESCE(goal, 'General')), E'\\n'), '• No trials booked today') as trial_list,\n  COUNT(*) as trial_count\n  FROM public.leads \n  WHERE status = 'trial_booked' AND (trial_date = CURRENT_DATE OR (trial_date IS NULL AND DATE(created_at AT TIME ZONE 'Asia/Kolkata') = CURRENT_DATE))\n),\nexpiring AS (\n  SELECT COALESCE(string_agg(CONCAT('• ', name, ' (', phone, ') - ', plan, ' - Expires ', end_date), E'\\n'), '• No members expiring this week') as exp_list,\n  COUNT(*) as exp_count\n  FROM public.members \n  WHERE end_date >= CURRENT_DATE AND end_date <= CURRENT_DATE + INTERVAL '7 days'\n),\nnew_leads AS (\n  SELECT COUNT(*) as new_lead_count FROM public.leads WHERE status = 'new'\n)\nSELECT \n  trials.trial_list,\n  trials.trial_count,\n  expiring.exp_list,\n  expiring.exp_count,\n  new_leads.new_lead_count,\n  TO_CHAR(CURRENT_DATE, 'DD-Mon-YYYY') as today_date\nFROM trials, expiring, new_leads;"
+      },
+      "id": "node-db-get-daily-digest",
+      "name": "Supabase: Aggregate Daily Briefing",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [320, 1140],
+      "credentials": {
+        "postgres": {
+          "id": "supabase-db-creds",
+          "name": "Supabase PostgreSQL Database"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/{{$env.WHATSAPP_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"919999636973\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"☀️ *Good Morning Coach Rahul!*\\nHere is your Well Flabb briefing for {{ $json.today_date }}:\\n\\n🏋️ *TODAY\\'S SCHEDULED TRIALS ({{ $json.trial_count }}):*\\n{{ $json.trial_list }}\\n\\n⚠️ *EXPIRING IN 7 DAYS ({{ $json.exp_count }}):*\\n{{ $json.exp_list }}\\n\\n📩 *UNCONTACTED NEW LEADS:* {{ $json.new_lead_count }}\\n\\nHave a great session today!\"\n  }\n}"
+      },
+      "id": "node-whatsapp-7am-digest",
+      "name": "WhatsApp: Send 7 AM Digest to Owner",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 1140],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-cloud-api-creds",
+          "name": "Meta WhatsApp Cloud API Token"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook: New Lead Received": {
+      "main": [
+        [
+          { "node": "Supabase: Save Lead", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Supabase: Save Lead": {
+      "main": [
+        [
+          { "node": "WhatsApp: Send Lead Welcome", "type": "main", "index": 0 },
+          { "node": "WhatsApp: Alert Owner (+91 99996 36973)", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Cron: Daily 11:00 AM IST (3-Day Followup)": {
+      "main": [
+        [
+          { "node": "Supabase: Fetch 3-Day Old New Leads", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Supabase: Fetch 3-Day Old New Leads": {
+      "main": [
+        [
+          { "node": "WhatsApp: 3-Day Follow-Up with Review Quote", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Cron: Daily 10:00 AM IST (Renewals)": {
+      "main": [
+        [
+          { "node": "Supabase: Fetch Expiring Members (7, 3, 0 Days)", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Supabase: Fetch Expiring Members (7, 3, 0 Days)": {
+      "main": [
+        [
+          { "node": "WhatsApp: Send Razorpay Renewal Link", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Cron: Tue & Fri 4:00 PM IST (Inactive 10d)": {
+      "main": [
+        [
+          { "node": "Supabase: Inactive 10+ Days Members", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Supabase: Inactive 10+ Days Members": {
+      "main": [
+        [
+          { "node": "WhatsApp: Coach Rahul Inactive Nudge", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Cron: Daily 7:00 AM IST (Owner Digest)": {
+      "main": [
+        [
+          { "node": "Supabase: Aggregate Daily Briefing", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Supabase: Aggregate Daily Briefing": {
+      "main": [
+        [
+          { "node": "WhatsApp: Send 7 AM Digest to Owner", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  }
+}
