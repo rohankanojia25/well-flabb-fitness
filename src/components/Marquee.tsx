@@ -7,7 +7,7 @@ export const Marquee: React.FC = () => {
     { label: 'Muscle Gain', icon: Dumbbell },
     { label: 'Beginner Strength', icon: Award },
     { label: "Women's Fitness", icon: Heart },
-    { label: 'Personal Training [confirm]', icon: Sparkles },
+    { label: 'Personal Training', icon: Sparkles },
     { label: 'Custom Diet Guidance', icon: Flame },
     { label: '1-on-1 Floor Coaching', icon: Dumbbell },
   ];

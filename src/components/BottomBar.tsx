@@ -10,8 +10,13 @@ export const BottomBar: React.FC<BottomBarProps> = ({ onOpenTrial }) => {
   return (
     <aside
       aria-label="Quick Mobile Actions"
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0F1115]/95 backdrop-blur-lg border-t border-[#2B303C] shadow-[0_-5px_20px_rgba(0,0,0,0.6)]"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0F1115]/95 border-t border-[#2B303C] shadow-[0_-5px_20px_rgba(0,0,0,0.6)]"
+      style={{
+        height: 'calc(64px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+      }}
     >
       <div className="h-16 max-w-md mx-auto px-4 grid grid-cols-3 items-center">
         
@@ -31,7 +36,7 @@ export const BottomBar: React.FC<BottomBarProps> = ({ onOpenTrial }) => {
         <div className="flex justify-center -mt-4">
           <button
             onClick={onOpenTrial}
-            className="pulse-free-trial w-14 h-14 rounded-full bg-[#E4572E] text-white flex flex-col items-center justify-center shadow-lg shadow-[#E4572E]/40 border-2 border-[#0F1115] active:scale-95 transition-transform"
+            className="pulse-free-trial w-14 h-14 rounded-full bg-[#E4572E] text-white flex flex-col items-center justify-center shadow-lg shadow-[#E4572E]/40 border-2 border-[#0F1115] active:scale-95 transition-transform cursor-pointer"
             aria-label="Book Free Trial on WhatsApp"
           >
             <MessageCircle className="w-6 h-6 fill-white/20" />

@@ -50,9 +50,17 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Lenis smooth scroll initialization (for public site)
+  // Lenis smooth scroll initialization (Desktop only, disabled on mobile/touch devices)
   useEffect(() => {
     if (isAdminRoute) return;
+
+    // Disable on touch devices (use native iOS Safari smooth scrolling)
+    const isTouch =
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia('(pointer: coarse)').matches);
+    if (isTouch) return;
 
     // Respect prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -89,7 +97,7 @@ export const App: React.FC = () => {
     return (
       <Suspense
         fallback={
-          <div className="min-h-screen bg-[#0F1115] text-[#9EABB8] flex items-center justify-center">
+          <div className="min-h-[100dvh] bg-[#0F1115] text-[#9EABB8] flex items-center justify-center">
             <div className="w-8 h-8 border-2 border-[#E4572E] border-t-transparent rounded-full animate-spin" />
           </div>
         }
@@ -99,9 +107,9 @@ export const App: React.FC = () => {
     );
   }
 
-  // Public Site (Design completely unchanged)
+  // Public Site (Design completely unchanged, bottom padding compensates for 64px + safe-area inset)
   return (
-    <div className="min-h-screen bg-[#0F1115] text-[#F5F5F5] font-sans relative selection:bg-[#E4572E] selection:text-white">
+    <div className="min-h-[100dvh] bg-[#0F1115] text-[#F5F5F5] font-sans relative selection:bg-[#E4572E] selection:text-white pb-[calc(64px+env(safe-area-inset-bottom,0px))] md:pb-0">
       {/* 1. Header / Navbar */}
       <Navbar onOpenTrial={scrollToTrial} />
 
@@ -133,7 +141,7 @@ export const App: React.FC = () => {
         {/* 8. Reviews */}
         <Reviews />
 
-        {/* 9. Free-Trial Form & Weight Loss Calculator */}
+        {/* 9. Free-Trial Form */}
         <FreeTrialForm />
 
         {/* 10. Visit Us */}

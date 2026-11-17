@@ -41,7 +41,6 @@ export const WeightLossCalculator: React.FC = () => {
     }
 
     const toLose = Math.max(0, weightKg - goalWeightKg);
-    // Safe weekly loss range: 0.5 kg to 1.0 kg / week
     const minW = toLose > 0 ? Math.ceil(toLose / 1.0) : 0;
     const maxW = toLose > 0 ? Math.ceil(toLose / 0.5) : 0;
     const avgW = toLose > 0 ? Math.round(toLose / 0.75) : 0;
@@ -78,14 +77,13 @@ export const WeightLossCalculator: React.FC = () => {
   };
 
   return (
-    <section id="weight-loss-plan" className="py-16 md:py-24 bg-[#0F1115] relative overflow-hidden border-t border-[#2B303C]/60">
-      {/* Background glow */}
+    <section id="weight-loss-plan" className="py-[56px] px-5 md:py-24 md:px-8 bg-[#0F1115] relative overflow-hidden border-t border-[#2B303C]/60">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#17BEBB]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-14">
           <p className="eyebrow mb-2">CUSTOM CALCULATOR</p>
           <h2>
             WHAT&apos;S YOUR <span className="heading-accent">WEIGHT-LOSS PLAN?</span>
@@ -99,8 +97,8 @@ export const WeightLossCalculator: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           
           {/* Left Column: Interactive Inputs (Phone-friendly, large targets) */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-6 sm:p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
-            <div className="flex items-center gap-2.5 pb-4 mb-6 border-b border-[#2B303C]">
+          <div className="lg:col-span-7 rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-5 sm:p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
+            <div className="flex items-center gap-2.5 pb-4 mb-5 border-b border-[#2B303C]">
               <div className="w-9 h-9 rounded-lg bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-center justify-center text-[#E4572E]">
                 <Calculator className="w-5 h-5" />
               </div>
@@ -110,7 +108,7 @@ export const WeightLossCalculator: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5">
               
               {/* Row 1: Gender & Age */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -139,11 +137,11 @@ export const WeightLossCalculator: React.FC = () => {
 
                 {/* Age */}
                 <div>
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="flex justify-between items-center mb-1.5">
                     <label className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider">
                       Age (Years)
                     </label>
-                    <span className="font-mono text-sm font-bold text-white">{age} yrs</span>
+                    <span className="text-sm font-bold text-white">{age} yrs</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -176,11 +174,11 @@ export const WeightLossCalculator: React.FC = () => {
 
               {/* Height (cm) */}
               <div>
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-center mb-1.5">
                   <label className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider">
                     Height (cm)
                   </label>
-                  <span className="font-mono text-base font-bold text-white">{heightCm} cm</span>
+                  <span className="text-base font-bold text-white">{heightCm} cm</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -214,11 +212,11 @@ export const WeightLossCalculator: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Current Weight */}
                 <div>
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="flex justify-between items-center mb-1.5">
                     <label className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider">
                       Current Weight (kg)
                     </label>
-                    <span className="font-mono text-base font-bold text-white">{weightKg} kg</span>
+                    <span className="text-base font-bold text-white">{weightKg} kg</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -258,11 +256,11 @@ export const WeightLossCalculator: React.FC = () => {
 
                 {/* Goal Weight */}
                 <div>
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="flex justify-between items-center mb-1.5">
                     <label className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider">
                       Goal Weight (kg)
                     </label>
-                    <span className="font-mono text-base font-bold text-[#17BEBB]">{goalWeightKg} kg</span>
+                    <span className="text-base font-bold text-[#17BEBB]">{goalWeightKg} kg</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -327,10 +325,10 @@ export const WeightLossCalculator: React.FC = () => {
           </div>
 
           {/* Right Column: Live Results & WhatsApp Action */}
-          <div className="lg:col-span-5 rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] space-y-6">
+          <div className="lg:col-span-5 rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-5 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] space-y-5">
             
             <div>
-              <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#2B303C]">
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#2B303C]">
                 <div>
                   <h3 className="text-xl sm:text-2xl text-white">YOUR ESTIMATED PLAN</h3>
                   <p className="text-xs text-[#9EABB8]">Real-time results based on safe guidelines</p>
@@ -341,10 +339,8 @@ export const WeightLossCalculator: React.FC = () => {
               </div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                
-                {/* Metric 1: BMI */}
-                <div className="p-4 rounded-xl bg-[#0F1115] border border-[#2B303C]">
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="p-3.5 rounded-xl bg-[#0F1115] border border-[#2B303C]">
                   <div className="flex items-center gap-1.5 text-xs text-[#9EABB8] mb-1">
                     <Activity className="w-3.5 h-3.5 text-[#17BEBB]" />
                     <span>Your BMI</span>
@@ -357,8 +353,7 @@ export const WeightLossCalculator: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Metric 2: Target Weight Loss */}
-                <div className="p-4 rounded-xl bg-[#0F1115] border border-[#2B303C]">
+                <div className="p-3.5 rounded-xl bg-[#0F1115] border border-[#2B303C]">
                   <div className="flex items-center gap-1.5 text-xs text-[#9EABB8] mb-1">
                     <Scale className="w-3.5 h-3.5 text-[#E4572E]" />
                     <span>Target Loss</span>
@@ -370,22 +365,21 @@ export const WeightLossCalculator: React.FC = () => {
                     {weightKg}kg → {goalWeightKg}kg
                   </span>
                 </div>
-
               </div>
 
               {/* Safe Weekly Loss Range & Estimated Weeks */}
-              <div className="space-y-3">
-                <div className="p-4 rounded-xl bg-[#0F1115] border border-[#2B303C]">
+              <div className="space-y-2.5">
+                <div className="p-3 rounded-xl bg-[#0F1115] border border-[#2B303C]">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-semibold text-[#9EABB8]">Safe Weekly Loss Range</span>
-                    <span className="text-xs font-bold text-[#17BEBB] font-mono">0.5 – 1.0 kg/wk</span>
+                    <span className="text-xs font-bold text-[#17BEBB]">0.5 – 1.0 kg/wk</span>
                   </div>
                   <p className="text-[11px] text-[#9EABB8]">
-                    Adhering to certified fitness norms for fat loss without muscle depletion or weakness.
+                    Adhering to certified fitness norms for fat loss without muscle depletion.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-gradient-to-br from-[#1A1D23] to-[#0F1115] border-2 border-[#17BEBB]/40">
+                <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#1A1D23] to-[#0F1115] border-2 border-[#17BEBB]/40">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-bold text-white uppercase tracking-wider">
                       Estimated Weeks to Goal
@@ -401,8 +395,8 @@ export const WeightLossCalculator: React.FC = () => {
               </div>
 
               {/* Note about Coach Rahul building diet & workout plan */}
-              <div className="mt-4 p-4 rounded-xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-[#E4572E] shrink-0 mt-0.5" />
+              <div className="mt-3 p-3.5 rounded-xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-start gap-2.5">
+                <Sparkles className="w-4 h-4 text-[#E4572E] shrink-0 mt-0.5" />
                 <p className="text-xs text-white leading-relaxed">
                   <strong className="text-[#E4572E] font-bold">Trainer-Built Plan:</strong> Well Flabb&apos;s coach Rahul personally designs your customized Indian diet chart and progressive floor workout to hit this goal safely.
                 </p>
@@ -410,18 +404,17 @@ export const WeightLossCalculator: React.FC = () => {
             </div>
 
             {/* Bottom Button + Disclaimer */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-2.5 pt-1">
               <button
                 type="button"
                 onClick={handleWhatsAppShare}
-                className="pulse-free-trial w-full min-h-[52px] py-3.5 px-6 rounded-xl bg-[#E4572E] hover:bg-[#cf4720] text-white font-extrabold text-sm sm:text-base tracking-wide flex items-center justify-center gap-2.5 shadow-xl shadow-[#E4572E]/30 transition-transform active:scale-95 cursor-pointer"
+                className="pulse-free-trial w-full min-h-[50px] py-3 px-6 rounded-xl bg-[#E4572E] hover:bg-[#cf4720] text-white font-extrabold text-sm sm:text-base tracking-wide flex items-center justify-center gap-2 shadow-xl shadow-[#E4572E]/30 transition-transform active:scale-95 cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white/20" />
                 <span>Get My Plan on WhatsApp</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </button>
 
-              {/* Constraint: Disclaimer line */}
               <p className="text-center text-[11px] text-[#9EABB8]/90 flex items-center justify-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-[#17BEBB] shrink-0" />
                 <span>Estimates only. Consult a doctor for medical conditions.</span>

@@ -181,7 +181,7 @@ export const AdminDashboard: React.FC<{ onBackToSite: () => void }> = ({ onBackT
      ========================================================================= */
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0F1115] text-[#F5F5F5] flex flex-col justify-center items-center px-4 py-12">
+      <div className="min-h-[100dvh] bg-[#0F1115] text-[#F5F5F5] flex flex-col justify-center items-center px-4 py-12">
         <div className="w-full max-w-md bg-[#1A1D23] border border-[#2B303C] rounded-2xl p-6 sm:p-8 shadow-2xl">
           <div className="text-center mb-6">
             <div className="w-12 h-12 rounded-xl bg-[#E4572E] text-white flex items-center justify-center mx-auto mb-3 shadow-lg shadow-[#E4572E]/30">
@@ -254,7 +254,7 @@ export const AdminDashboard: React.FC<{ onBackToSite: () => void }> = ({ onBackT
      AUTHENTICATED STAFF DASHBOARD
      ========================================================================= */
   return (
-    <div className="min-h-screen bg-[#0F1115] text-[#F5F5F5] pb-24 md:pb-12">
+    <div className="min-h-[100dvh] bg-[#0F1115] text-[#F5F5F5] pb-24 md:pb-12">
       
       {/* Top Admin Header */}
       <header className="bg-[#1A1D23] border-b border-[#2B303C] sticky top-0 z-30 shadow-md">

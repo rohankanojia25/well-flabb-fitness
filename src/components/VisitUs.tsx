@@ -6,12 +6,12 @@ export const VisitUs: React.FC = () => {
   const [showInteractiveMap, setShowInteractiveMap] = useState(false);
 
   return (
-    <section id="visit" className="py-16 md:py-24 relative overflow-hidden bg-[#1A1D23]/50">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="visit" className="py-[56px] px-5 md:py-24 md:px-8 relative overflow-hidden bg-[#1A1D23]/50">
+      <div className="w-full max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
-          <p className="eyebrow mb-2">LOCATION & CONTACT</p>
+        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-16">
+          <p className="eyebrow mb-2">LOCATION &amp; CONTACT</p>
           <h2>
             VISIT WELL FLABB <span className="heading-accent">FITNESS</span>
           </h2>
@@ -21,13 +21,13 @@ export const VisitUs: React.FC = () => {
         </div>
 
         {/* 2-Column Info & Map Preview */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto">
           
           {/* Contact & Address Details */}
           <div className="lg:col-span-5 rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
-            <div className="space-y-6">
+            <div className="space-y-5">
               
-              {/* Address item */}
+              {/* Address */}
               <div className="flex items-start gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-center justify-center text-[#E4572E] shrink-0 mt-0.5">
                   <MapPin className="w-5 h-5" />
@@ -39,7 +39,7 @@ export const VisitUs: React.FC = () => {
                   <p className="text-base font-semibold text-white leading-snug">
                     {GYM_INFO.name}
                   </p>
-                  <p className="text-sm font-mono text-[#9EABB8] mt-1">
+                  <p className="text-sm text-[#9EABB8] mt-1">
                     {GYM_INFO.address}
                   </p>
                   <p className="text-xs text-[#9EABB8] mt-0.5">
@@ -48,7 +48,7 @@ export const VisitUs: React.FC = () => {
                 </div>
               </div>
 
-              {/* Hours item */}
+              {/* Hours */}
               <div className="flex items-start gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-[#17BEBB]/10 border border-[#17BEBB]/30 flex items-center justify-center text-[#17BEBB] shrink-0 mt-0.5">
                   <Clock className="w-5 h-5" />
@@ -57,34 +57,31 @@ export const VisitUs: React.FC = () => {
                   <h4 className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider mb-1">
                     Operating Batches (IST)
                   </h4>
-                  <p className="text-sm text-white font-mono">
+                  <p className="text-sm text-white">
                     Morning: {TIMINGS.morning.time}
                   </p>
-                  <p className="text-sm text-white font-mono">
+                  <p className="text-sm text-white">
                     Evening: {TIMINGS.evening.time}
-                  </p>
-                  <p className="text-xs text-[#9EABB8] mt-1">
-                    Weekly Off: <span className="font-mono text-[#E4572E] font-semibold">{TIMINGS.weeklyOff}</span>
                   </p>
                 </div>
               </div>
 
-              {/* Phone contact */}
+              {/* Phone */}
               <div className="flex items-start gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-center justify-center text-[#E4572E] shrink-0 mt-0.5">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-[#17BEBB] uppercase tracking-wider mb-1">
-                    Direct Gym & Coach Line
+                    Direct Gym &amp; Coach Line
                   </h4>
                   <a
                     href={`tel:${GYM_INFO.phoneRaw}`}
-                    className="text-lg font-bold font-mono text-white hover:text-[#E4572E] transition-colors"
+                    className="text-lg font-bold text-white hover:text-[#E4572E] transition-colors"
                   >
                     {GYM_INFO.phoneDisplay}
                   </a>
-                  <p className="text-xs text-[#9EABB8]">Direct WhatsApp & Phone Support</p>
+                  <p className="text-xs text-[#9EABB8]">Direct WhatsApp &amp; Phone Support</p>
                 </div>
               </div>
 
@@ -124,9 +121,8 @@ export const VisitUs: React.FC = () => {
 
           </div>
 
-          {/* Map Section (Speed on 4G: Map loads only when tapped!) */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#1A1D23] border border-[#2B303C] overflow-hidden min-h-[340px] sm:min-h-[420px] relative flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
-            
+          {/* Map Preview */}
+          <div className="lg:col-span-7 rounded-2xl bg-[#1A1D23] border border-[#2B303C] overflow-hidden min-h-[320px] sm:min-h-[400px] relative flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
             {showInteractiveMap ? (
               <iframe
                 title="Well Flabb Fitness Club Google Map"
@@ -136,21 +132,18 @@ export const VisitUs: React.FC = () => {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             ) : (
-              /* High-performance static map preview (Zero heavy iframe payload until tapped) */
-              <div className="relative w-full h-full min-h-[380px] flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#1A1D23] via-[#0F1115] to-[#1A1D23] text-center">
-                
-                {/* Visual Map Grid Pattern */}
+              <div className="relative w-full h-full min-h-[360px] flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#1A1D23] via-[#0F1115] to-[#1A1D23] text-center">
                 <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#17BEBB_1px,transparent_1px)] [background-size:16px_16px]" />
                 
                 <div className="relative z-10 max-w-sm flex flex-col items-center">
-                  <div className="w-16 h-16 rounded-2xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-center justify-center text-[#E4572E] mb-4 shadow-xl">
-                    <MapPin className="w-8 h-8 animate-bounce" />
+                  <div className="w-14 h-14 rounded-2xl bg-[#E4572E]/10 border border-[#E4572E]/30 flex items-center justify-center text-[#E4572E] mb-3 shadow-xl">
+                    <MapPin className="w-7 h-7" />
                   </div>
 
-                  <h3 className="text-2xl text-white mb-1">
+                  <h3 className="text-xl sm:text-2xl text-white mb-1">
                     CHANDER NAGAR, KRISHNA NAGAR
                   </h3>
-                  <p className="text-xs text-[#9EABB8] mb-6">
+                  <p className="text-xs text-[#9EABB8] mb-5">
                     Tap below to load the live map or open directly in the Google Maps app with live GPS directions.
                   </p>
 
@@ -182,10 +175,8 @@ export const VisitUs: React.FC = () => {
                   </span>
                   <span>East Delhi, PIN 110051</span>
                 </div>
-
               </div>
             )}
-
           </div>
 
         </div>

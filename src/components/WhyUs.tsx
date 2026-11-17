@@ -7,11 +7,11 @@ const icons = [UserCheck, Utensils, HeartHandshake, Smile];
 
 export const WhyUs: React.FC = () => {
   return (
-    <section id="why-us" className="py-16 md:py-24 relative overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="why-us" className="py-[56px] px-5 md:py-24 md:px-8 relative overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-16">
           <p className="eyebrow mb-2">WHY WELL FLABB</p>
           <h2>
             A GYM WHERE YOU ACTUALLY GET <span className="heading-accent">RESULTS</span>
@@ -21,8 +21,8 @@ export const WhyUs: React.FC = () => {
           </p>
         </div>
 
-        {/* Mobile: Horizontal swipe row with scroll-snap & peek; Desktop: 4-card grid */}
-        <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0">
+        {/* Mobile: Horizontal swipe row with scroll-snap & peek (84vw); Desktop: 4-card grid */}
+        <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-4 -mx-5 px-5 md:mx-0 md:px-0">
           {WHY_US_ITEMS.map((item, idx) => {
             const Icon = icons[idx % icons.length];
             return (
@@ -32,7 +32,7 @@ export const WhyUs: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="shrink-0 w-[84vw] sm:w-[320px] md:w-auto snap-center rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-6 flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] hover:border-[#17BEBB]/60 transition-all duration-300"
+                className="shrink-0 w-[84vw] max-w-[320px] md:w-auto snap-center rounded-2xl bg-[#1A1D23] border border-[#2B303C] p-6 flex flex-col justify-between shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] hover:border-[#17BEBB]/60 transition-all duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -60,12 +60,6 @@ export const WhyUs: React.FC = () => {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* Mobile Swipe Hint */}
-        <div className="flex items-center justify-center gap-2 mt-2 md:hidden text-xs text-[#9EABB8]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#E4572E]" />
-          <span>Swipe horizontally to explore all 4 pillars</span>
         </div>
 
       </div>

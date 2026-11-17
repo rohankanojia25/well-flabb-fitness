@@ -2,10 +2,11 @@ export const GYM_INFO = {
   name: "Well Flabb Fitness Club",
   phoneDisplay: "+91 99996 36973",
   phoneRaw: "919999636973",
-  address: "[PLACEHOLDER], Chander Nagar, Krishna Nagar, Delhi 110051",
+  address: "Chander Nagar, Krishna Nagar, Delhi 110051",
   area: "Chander Nagar, Krishna Nagar, Delhi",
   googleRating: 5.0,
   reviewCount: 54,
+  ratingSummary: "5.0 on Google · 54 reviews",
   whatsappBase: "https://wa.me/919999636973",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Well+Flabb+Fitness+Club+Chander+Nagar+Krishna+Nagar+Delhi",
 };
@@ -88,7 +89,7 @@ export const PROGRAMS = [
   },
   {
     id: "personal-training",
-    title: "Personal Training [confirm]",
+    title: "Personal Training",
     badge: "Dedicated Trainer",
     whoItsFor: "Those who want 100% undivided coach supervision and accelerated results.",
     whatYouGet: [
@@ -103,19 +104,19 @@ export const PROGRAMS = [
 export const TIMINGS = {
   morning: {
     title: "Morning Batch",
-    time: "[TIME-12:00 PM]",
+    time: "Ends 12:00 PM",
     desc: "Start your day with high energy, fresh focus, and trainer-led morning warmup.",
     idealFor: "Early risers, office commuters, and morning workout lovers",
     batchKey: "Morning",
   },
   evening: {
     title: "Evening Batch",
-    time: "[5:00 PM-TIME]",
+    time: "Starts 5:00 PM",
     desc: "De-stress after work, torch calories, and hit your strength benchmarks with coach Rahul.",
     idealFor: "Working professionals, students, and evening fitness fans",
     batchKey: "Evening",
   },
-  weeklyOff: "[DAY]",
+  weeklyOff: "",
 };
 
 export const PLANS = [
@@ -123,7 +124,7 @@ export const PLANS = [
     id: "quarterly",
     title: "Quarterly Plan",
     duration: "3 Months",
-    price: "Rs [PLACEHOLDER]",
+    price: "Inquire for Rates",
     popular: true,
     tagline: "Best for noticeable, lasting body transformation",
     features: [
@@ -139,7 +140,7 @@ export const PLANS = [
     id: "monthly",
     title: "Monthly Plan",
     duration: "1 Month",
-    price: "Rs [PLACEHOLDER]",
+    price: "Inquire for Rates",
     popular: false,
     tagline: "Great for short-term trials and testing the vibe",
     features: [
@@ -154,7 +155,7 @@ export const PLANS = [
     id: "half-yearly",
     title: "Half-Yearly Plan",
     duration: "6 Months",
-    price: "Rs [PLACEHOLDER]",
+    price: "Inquire for Rates",
     popular: false,
     tagline: "Ideal for serious physique remodeling",
     features: [
@@ -162,7 +163,7 @@ export const PLANS = [
       "Advanced strength & hypertrophy protocol",
       "Monthly diet revamp as metabolism speeds up",
       "Priority trainer consult & posture audits",
-      "Pause facility included [confirm]",
+      "Pause facility included",
     ],
     whatsappText: "Hi Well Flabb, I'd like to join the Half-Yearly Plan (6 Months).",
   },
@@ -170,7 +171,7 @@ export const PLANS = [
     id: "yearly",
     title: "Yearly Plan",
     duration: "12 Months",
-    price: "Rs [PLACEHOLDER]",
+    price: "Inquire for Rates",
     popular: false,
     tagline: "Lowest effective monthly cost for lifetime fitness",
     features: [
@@ -178,7 +179,7 @@ export const PLANS = [
       "Complete year-long trainer mentorship",
       "Comprehensive seasonal diet programming",
       "Highest savings per month",
-      "Free guest pass privileges [confirm]",
+      "Free guest pass privileges",
     ],
     whatsappText: "Hi Well Flabb, I'd like to join the Yearly Plan (12 Months).",
   },
